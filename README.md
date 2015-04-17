@@ -18,4 +18,4 @@ Alex Luo
 Brian Ensor
 
 ## Open Issues/Bugs
-See project issue tracker
+* [Issue 1: Classes and Methods](https://github.com/luoalex222/Luo_CSCI2270_FinalProject/issues/1)
