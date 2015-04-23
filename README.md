@@ -4,7 +4,10 @@
 Our program will be a one on one blackjack game between the player and the computer. The computer will play as the dealer, follwing standard casino rules. The player be given $100 to bet. When the player is out of money or decides to leave, the game will end.
 
 ## How to Run
-In progress
+    git clone https://github.com/luoalex222/Luo_CSCI2270_FinalProject/
+    cd Luo_CSCI2270_FinalProject
+    c++ Driver.cpp
+    ./a.out
 
 ## Dependencies
 None
