@@ -1,17 +1,20 @@
 #ifndef DEALER_H
 #define DEALER_H
+
 #include "Hand.h"
 #include "Decks.h"
-class Dealer{
+
+class Dealer {
   private:
-	void HouseRules();
+	void houseRules();
 	Hand * _hand;
 	Decks _decks;
-	
   public:
-	void Hit(Hand* hand);
-	void Stay();
-	void DoubleDown(Hand* hand);
-	
+    Dealer(Hand *hand);
+    virtual ~Dealer();
+    Hand getHand();
+	void hit(Hand *hand);
+	void stay();
+	void doubleDown(Hand *hand);
 };
 #endif
