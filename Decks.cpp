@@ -12,6 +12,7 @@ Decks::Decks() {
             }
         }
     }
+    shuffle();
 }
 //Function to shuffle deck. Built in C++ shuffle function
 void Decks::shuffle() {
