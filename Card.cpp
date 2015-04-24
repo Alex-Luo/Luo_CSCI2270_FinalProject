@@ -1,14 +1,14 @@
 #include "Card.h"
-
+//card constructor
 Card::Card(int value, int suit) {
     _value = value;
     _suit = suit;
 }
-
+//return balues
 int Card::getValue() {
     return _value;
 }
-
+//suits and face cards to respectable numbers
 std::string Card::toString() {
     std::string returnString = "";
     if (_value == 1) returnString += "ace";
