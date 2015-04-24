@@ -11,15 +11,15 @@ int Card::getValue() {
 //suits and face cards to respectable numbers
 std::string Card::toString() {
     std::string returnString = "";
-    if (_value == 1) returnString += "ace";
-    else if (_value == 11) returnString += "jack";
-    else if (_value == 12) returnString += "queen";
-    else if (_value == 13) returnString += "king";
+    if (_value == 1) returnString += "Ace";
+    else if (_value == 11) returnString += "Jack";
+    else if (_value == 12) returnString += "Queen";
+    else if (_value == 13) returnString += "King";
     else returnString += std::to_string(_value);
     returnString += " of ";
-    if (_suit == 0) returnString += "clubs";
-    else if (_suit == 1) returnString += "diamonds";
-    else if (_suit == 2) returnString += "hearts";
-    else if (_suit == 3) returnString += "spades";
+    if (_suit == 0) returnString += "Clubs";
+    else if (_suit == 1) returnString += "Diamonds";
+    else if (_suit == 2) returnString += "Hearts";
+    else if (_suit == 3) returnString += "Spades";
     return returnString;
 }
