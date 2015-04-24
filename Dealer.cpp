@@ -1,5 +1,5 @@
 #include "Dealer.h"
-
+//initiate start of game
 Dealer::Dealer(Hand *hand) {
     _hand = new Hand;
     hit(hand);
@@ -7,21 +7,21 @@ Dealer::Dealer(Hand *hand) {
     hit(hand);
     hit(_hand);
 }
-
+//restart dealer hand
 Dealer::~Dealer() {
     delete _hand;
 }
-
+//Hits one card
 void Dealer::hit(Hand *hand) {
 	//Deal 1 card
 	hand->addCard(_decks.pop());
 }
-
+//Player can stay
 void Dealer::stay() {
 	//Do nothing, pass to house.
 	houseRules();
 }
-
+//Double Down
 void Dealer::doubleDown(Hand *hand) {
 	//Hit once, then has to stay.
 	hit(hand);
