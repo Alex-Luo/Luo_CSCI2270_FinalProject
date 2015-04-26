@@ -1,4 +1,5 @@
 #include "Hand.h"
+#include <iostream>
 //returns the cards
 std::vector<Card> Hand::getCards() {
     return _cards;
@@ -23,6 +24,9 @@ int Hand::getValue(bool dealer) {
     for (int i = 0; i < numAces; i++) {         //if the value is over 21 wth aces, change them to 1
         if (returnValue > 21) returnValue -= 10;
     }
-    if (dealer && _cards.size() == 2) returnValue -= _cards[0].getValue();
+    if (dealer && _cards.size() == 2) {
+        int value = _cards[1].getValue();
+        returnValue = (value == 1) ? 11 : value;
+    }
     return returnValue;
 }
