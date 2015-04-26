@@ -1,14 +1,55 @@
 #include "Card.h"
-//card constructor
+/*
+Function prototype:
+Card(int, int);
+
+Function description:
+Constructor to initilize a new card that has a given value and suit.
+
+Example:
+Card deckCard = Card(5, 0)
+
+Pre-conditions: 1 <= value <= 14; 0 <= suit <= 3
+Post-conditions: returns a card
+*/
+
 Card::Card(int value, int suit) {
     _value = value;
     _suit = suit;
 }
-//return balues
+
+
+/*
+Function prototype:
+int Card::getValue();
+
+Function description:
+This function returns a cards given value
+
+Example:
+cardValue = _cards.getValue();
+
+Pre-conditions: card must have a pre assigned value. 
+Post-conditions: returns the cards value. 
+*/
 int Card::getValue() {
     return _value;
 }
-//suits and face cards to respectable numbers
+
+
+/*
+Function prototype:
+std::string Card::toString();
+
+Function description:
+This function returns the name of the card back in accordance to the card value;
+
+Example:
+cout << playerHand.getCard()[i].toString() << endl;
+
+Pre-conditions: there has to be an assigned value between 1-14 to the card. 
+Post-conditions: returns the name of the card
+*/
 std::string Card::toString() {
     std::string returnString = "";
     if (_value == 1) returnString += "Ace";
