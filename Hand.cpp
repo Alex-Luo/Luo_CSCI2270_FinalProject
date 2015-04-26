@@ -1,13 +1,55 @@
 #include "Hand.h"
-//returns the cards
+/*
+Function prototype:
+std::vector<Card> Hand::getCards();
+
+Function description:
+function returns the cards in players hand. 
+
+Example:
+cout << playerHand.getCards()[i].toString()<< endl;
+
+Pre-conditions: player hand must exist. 
+Post-conditions: returns the players hand
+*/
 std::vector<Card> Hand::getCards() {
     return _cards;
 }
-//add card to hand
+
+
+
+/*
+Function prototype:
+void Hand::addCard(Card);
+
+Function description:
+Adds a card to the hand
+
+Example:
+hand->addCard(_decks.pop());
+
+Pre-conditions: card must exist and hand must exist. 
+Post-conditions: hand now has an additional card that is now pushed back. 
+*/
 void Hand::addCard(Card card) {
     _cards.push_back(card);
 }
-//figure out value of cards
+
+
+
+/*
+Function prototype:
+int Hand::getValue(bool);
+
+Function description:
+Calculates the value of the hand
+
+Example:
+cout << "Value" << playerHand.getValue(dealer) << endl;
+
+Pre-conditions: must have a valid hand with valid numbers and suits. 
+Post-conditions: returns the value of the hand. 
+*/
 int Hand::getValue(bool dealer) {
     int returnValue = 0;
     int numAces = 0;
