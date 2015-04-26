@@ -6,7 +6,7 @@ Our program will be a one on one blackjack game between the player and the compu
 ## How to Run
     git clone https://github.com/luoalex222/Luo_CSCI2270_FinalProject/
     cd Luo_CSCI2270_FinalProject
-    c++ -std=c++11 Driver.cpp
+    c++ -std=c++11 Driver.cpp Card.cpp Dealer.cpp Decks.cpp Hand.cpp
     ./a.out
 
 ## Dependencies
