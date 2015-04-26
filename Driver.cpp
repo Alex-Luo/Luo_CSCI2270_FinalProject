@@ -1,100 +1,115 @@
 #include <iostream>
-#include "Dealer.cpp"
+#include <string>
+
+#include "Dealer.h"
 
 using namespace std;
-void Menu(){
-	cout << "Welcome to Blackjack!" << endl;
-	cout <<"===================" << endl;
-	cout <<"Current Balance: $" << wallet << endl;
-	cout << "1. Place bet?" << endl;
-	cout << "2. Quit" << endl;
-}
-void BetMenu(){
-	cout <<"1. Hit" << endl;
-	cout << "2. Double Down" << endl;
-	cout <<"3. Stay" << endl;
-}
-void HitMenu(){
-	cout <<"1. Hit" << endl;
-	cout << "2. Stay" << endl;
+
+int showMenu(string header, string *choices, int numChoices, bool showBalance, int balance) {
+    if (header != "") cout << "=====" << header << "=====" << endl;
+    if (showBalance) cout << "Current Balance: $" << balance << endl;
+	for (int i = 0; i < numChoices; i++) cout << i + 1 << ". " << choices[i] << endl;
+    string choiceString;
+    getline(cin, choiceString);
+    int choice = -1;
+    try {
+    	choice = stoi(choiceString);
+    } catch (...) {}
+    if (choice < 1 || choice > numChoices) {
+        cout << "Invalid choice. Please enter the number of a menu option." << endl;
+        return showMenu(header, choices, numChoices, showBalance, balance);
+    }
+    return choice;
 }
 
-int main(){
-	
-	string command = "0"
-	int bet;
-	int balance = 500;
-	string bet_command = "0"
-	string hit_command = "0"
-	int value = playerHand.getValue(dealer);
-	int dealer_value = dealer.getValue(dealer);
-	while(command != "2"){
-	// Loop through. As long as it's not 2(quit), it will keep printing menu after each play and ask for a bet.
-		Menu();
-		cin >> command;
-		cin >> bet;
-		//loop to make sure you don't overbet
-		while(bet > balance){
-			cout << "Cannot overbet" << endl;
-			cout << "Bet: $";
-			cin >> bet;
-			cout << bet << endl;
-		}
-		//initial deal
-		Hand playerHand;
-		Dealer dealer(&playerHand);
-		printPlayerHand(true, dealer.getHand());
-		printPlayerhand(false, playerHand);
-		
-		//loop through playing stage, while not stay, hit or double down
-		while(bet_command != "3"){
-			//while it is hit, loop to see if they still want to keep hitting or staying, only 2 options as long as its not over 21.
-			while((bet_command == "1") && (value < 21){
-				dealer.hit(&playerHand);
-				//loop through hitting stage, (probably messed this part up)
-				while(hit_command != "2"){
-					HitMenu();
-					dealer.hit(&playerHand);
-				}
-				
-			}
-			// if it's double down, hit once, double bet.
-			if(bet_command == "2"){
-				dealer.doubleDown($playerHand);
-				bet = bet + bet;
-			}
-			// if bust, print bust, the amount lost, and update the new balance.
-			if(value > 21){
-				cout << "BUST!!" << endl;
-				cout << "Lose $" << bet << endl;
-				balance = balance - bet;
-			}
-			// if dealer busts, update balance and win money.
-			if((value < 21) && (dealer_value > 21)){
-				cout << "Dealer Busts!" << endl;
-				cout << "Win $" << bet << "!" << endl;
-				balance = balance + bet;
-				
-			}
-			// if no one busts but your value is higher, you win.
-			if((value < 21) && (dealer_value > 21) && (value > dealer_value)){
-				cout << "Win!" << endl;
-				cout << "Win $" << bet << "!" << endl;
-				balance = balance + bet;
-				
-			}
-			// if no one busts but your value is lower, you lose.
-			if((value < 21) && (dealer_value > 21) && (value < dealer_value)){
-			cout << "Lost!" << endl;
-			cout << "Lose $" << bet << "!" << endl;
-			balance = balance - bet;
-			}
-			// if values are tied, balance stays the same. Push
-			if(value == dealer_value){
-				cout << "Push!" << endl;
-			}
-		} 
-	}
-	
+int betInput(bool showBalance, int balance) {
+	if (showBalance) cout << "Current Balance: $" << balance << endl;
+    cout << "Enter bet:" << endl;
+    string betString;
+    getline(cin, betString);
+    int bet = -1;
+    try {
+    	bet = stoi(betString);
+    } catch (...) {}
+    if (bet < 1 || bet > balance) {
+        cout << "Invalid bet. Please enter an integer >= 1 and <= " << balance << "." << endl;
+        return betInput(false, balance);
+    }
+    return bet;
 }
+
+void printPlayerHand(bool dealer, bool dealerHidden, Hand playerHand) {
+    cout << (dealer ? "Dealer" : "Player") << " hand:" << endl;
+    int numCards = playerHand.getCards().size();
+    for (int i = 0; i < numCards; i++) {
+        if (dealer && dealerHidden && numCards == 2 && i == 0) cout << "?" << endl;
+        else cout << playerHand.getCards()[i].toString() << endl;
+    }
+    cout << "Value: " << playerHand.getValue(dealerHidden) << endl;
+    cout << endl;
+}
+
+int main() {
+	int balance = 500;
+	Hand playerHand;
+	Dealer dealer(&playerHand);
+	while (1) {
+    	string mainChoices[2] = {"Place bet", "Quit"};
+    	int mainChoice = showMenu("Welcome to Blackjack!", mainChoices, 2, true, balance);
+    	if (mainChoice == 1) {
+    		int initialBet = betInput(true, balance);
+    		cout << endl;
+    		printPlayerHand(true, true, dealer.getHand());
+			printPlayerHand(false, false, playerHand);
+			if (playerHand.getValue(false) == 21) {
+				cout << "Blackjack!" << endl;
+				balance += initialBet * 1.5;
+			}
+			bool firstBet = true;
+			if (balance - (initialBet * 2) < 0) firstBet = false;
+			while (1) {
+				string betChoices[3] = {"Hit", "Stay", "Double Down"};
+    			int betChoice = showMenu("", betChoices, (firstBet ? 3 : 2), false, 0);
+    			cout << endl;
+    			if (betChoice == 1) {
+    				firstBet = false;
+    			    dealer.hit(&playerHand);
+    			    printPlayerHand(false, false, playerHand);
+    			    if (playerHand.getValue(false) > 21) break;
+    			} else if (betChoice == 2) {
+    				dealer.stay();
+    			    break;
+    			} else if (betChoice == 3) {
+    				initialBet *= 2;
+    			    dealer.doubleDown(&playerHand);
+    			    break;
+    			}
+			}
+			printPlayerHand(true, false, dealer.getHand());
+			printPlayerHand(false, false, playerHand);
+			int playerFinalValue = playerHand.getValue(false);
+			int dealerFinalValue = dealer.getHand().getValue(false);
+			if (playerFinalValue > 21) {
+    			cout << "Bust!" << endl;
+    			balance -= initialBet;
+    		}
+    		else if (playerFinalValue == dealerFinalValue) cout << "Push" << endl;
+    		else if (dealerFinalValue > 21) {
+    			cout << "Dealer Busts. You win!" << endl;
+    			balance += initialBet;
+    		}
+    		else if (playerFinalValue < dealerFinalValue) {
+    			cout << "Dealer wins!" << endl;
+    			balance -= initialBet;
+    		}
+    		else if (playerFinalValue > dealerFinalValue) {
+    			cout << "You win!" << endl;
+    			balance += initialBet;
+    		}
+    	} else if (mainChoice == 2) {
+    	    cout << "Goodbye!" << endl;
+    	    break;
+    	}
+    }
+    return 0;
 }
