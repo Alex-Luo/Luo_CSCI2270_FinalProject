@@ -1,28 +1,6 @@
 #include "Dealer.h"
 /*
 Function prototype:
-Dealer::Dealer(Hand *hand);
-
-Function description:
-This function constructs the dealers hand. It also starts the game by giving each player 2 cards. 
-
-Example:
-Dealer dealer(&playerHand);
-
-Pre-conditions: Must have a hand created. Calls in a hand and hands must exist that are being hit. 
-Post-conditions: player hand has 2 cards, dealer hand has 2 cards. 
-*/
-Dealer::Dealer(Hand *hand) {
-    _hand = new Hand;
-    hit(hand); //alternate hitting like in a standard blackjack game.
-    hit(_hand);
-    hit(hand);
-    hit(_hand);
-}
-
-
-/*
-Function prototype:
 Dealer::~Dealer()
 
 Function description:
@@ -37,6 +15,32 @@ Post-conditions: hand is deleted so you can play a new round.
 Dealer::~Dealer() {
     delete _hand;
 }
+
+
+
+/*
+Function prototype:
+Dealer::deal(Hand *hand);
+
+Function description:
+This function creates the dealers hand and starts the game by giving each player 2 cards. 
+
+Example:
+dealer.deal(&playerHand);
+
+Pre-conditions: Must have a hand created. Calls in a hand and hands must exist that are being hit. 
+Post-conditions: Dealer has a hand. Player hand has 2 cards, dealer hand has 2 cards. 
+*/
+void Dealer::deal(Hand *hand) {
+	delete _hand;
+	_hand = new Hand;
+	hit(hand); //alternate hitting like in a standard blackjack game.
+    hit(_hand);
+    hit(hand);
+    hit(_hand);
+}
+
+
 
 /*
 Function prototype:
@@ -98,6 +102,7 @@ void Dealer::doubleDown(Hand *hand) {
 }
 
 
+
 /*
 Function prototype:
 Hand Dealer::getHand()
@@ -114,6 +119,8 @@ Post-conditions: returns dealer hand.
 Hand Dealer::getHand() {
     return *_hand;
 }
+
+
 
 /*
 Function prototype:
