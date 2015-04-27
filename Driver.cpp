@@ -9,6 +9,7 @@ int showMenu(string header, string *choices, int numChoices, bool showBalance, i
     if (header != "") cout << "=====" << header << "=====" << endl;
     if (showBalance) cout << "Current Balance: $" << balance << endl;
 	for (int i = 0; i < numChoices; i++) cout << i + 1 << ". " << choices[i] << endl;
+    if (numChoices == 0) return -1;
     string choiceString;
     getline(cin, choiceString);
     int choice = -1;
@@ -22,8 +23,7 @@ int showMenu(string header, string *choices, int numChoices, bool showBalance, i
     return choice;
 }
 
-int betInput(bool showBalance, int balance) {
-	if (showBalance) cout << "Current Balance: $" << balance << endl;
+int betInput(int balance) {
     cout << "Enter bet:" << endl;
     string betString;
     getline(cin, betString);
@@ -33,7 +33,7 @@ int betInput(bool showBalance, int balance) {
     } catch (...) {}
     if (bet < 1 || bet > balance) {
         cout << "Invalid bet. Please enter an integer >= 1 and <= " << balance << "." << endl;
-        return betInput(false, balance);
+        return betInput(balance);
     }
     return bet;
 }
@@ -49,22 +49,35 @@ void printPlayerHand(bool dealer, bool dealerHidden, Hand playerHand) {
     cout << endl;
 }
 
+void endGame(int balance) {
+    showMenu("Game Over", NULL, 0, true, balance);
+}
+
 int main() {
 	int balance = 500;
-	Hand playerHand;
-	Dealer dealer(&playerHand);
+	Dealer dealer;
 	while (1) {
+        Hand playerHand;
+        dealer.deal(&playerHand);
     	string mainChoices[2] = {"Place bet", "Quit"};
     	int mainChoice = showMenu("Welcome to Blackjack!", mainChoices, 2, true, balance);
     	if (mainChoice == 1) {
-    		int initialBet = betInput(true, balance);
+            cout << endl;
+    		int initialBet = betInput(balance);
     		cout << endl;
     		printPlayerHand(true, true, dealer.getHand());
 			printPlayerHand(false, false, playerHand);
-			if (playerHand.getValue(false) == 21) {
+            int playerHandValue = playerHand.getValue(false);
+			if (playerHandValue == 21) {
 				cout << "Blackjack!" << endl;
 				balance += initialBet * 1.5;
+                continue;
 			}
+            else if (playerHandValue > 21) {
+                cout << "Bust!" << endl;
+                balance -= initialBet;
+                continue;
+            }
 			bool firstBet = true;
 			if (balance - (initialBet * 2) < 0) firstBet = false;
 			while (1) {
@@ -106,8 +119,14 @@ int main() {
     			cout << "You win!" << endl;
     			balance += initialBet;
     		}
+            cout << endl;
+            if (balance < 1) {
+                endGame(balance);
+                break;
+            }
     	} else if (mainChoice == 2) {
-    	    cout << "Goodbye!" << endl;
+            cout << endl;
+    	    endGame(balance);
     	    break;
     	}
     }
