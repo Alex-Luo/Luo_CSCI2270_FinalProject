@@ -23,7 +23,7 @@ Function prototype:
 Dealer::deal(Hand *hand);
 
 Function description:
-This function creates the dealers hand and starts the game by giving each player 2 cards. 
+This function creates the dealers hand and starts the game by giving each player 2 cards. It also ensures there are enough cards in the deck.
 
 Example:
 dealer.deal(&playerHand);
@@ -34,7 +34,11 @@ Post-conditions: Dealer has a hand. Player hand has 2 cards, dealer hand has 2 c
 void Dealer::deal(Hand *hand) {
 	delete _hand;
 	_hand = new Hand;
-	hit(hand); //alternate hitting like in a standard blackjack game.
+    // reshuffle cards if there aren't many left
+    if (_decks.numCards() < 50) {
+        _decks = Decks();
+    }
+    hit(hand); //alternate hitting like in a standard blackjack game.
     hit(_hand);
     hit(hand);
     hit(_hand);
