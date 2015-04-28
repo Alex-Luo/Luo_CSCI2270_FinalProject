@@ -88,7 +88,10 @@ int main() {
     				firstBet = false;
     			    dealer.hit(&playerHand);
     			    printPlayerHand(false, false, playerHand);
-    			    if (playerHand.getValue(false) > 21) break;
+    			    if (playerHand.getValue(false) >= 21) {
+                        dealer.stay();
+                        break;
+                    }
     			} else if (betChoice == 2) {
     				dealer.stay();
     			    break;
