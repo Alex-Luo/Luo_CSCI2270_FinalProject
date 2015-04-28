@@ -10,7 +10,8 @@ class Dealer {
 	Hand * _hand;
 	Decks _decks;
   public:
-    virtual ~Dealer();
+    Dealer();
+    ~Dealer();
     Hand getHand();
     void deal(Hand *hand);
 	void hit(Hand *hand);

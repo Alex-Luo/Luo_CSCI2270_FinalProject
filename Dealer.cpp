@@ -1,4 +1,21 @@
 #include "Dealer.h"
+
+/*
+Function prototype:
+Dealer::Dealer()
+
+Function description:
+Constructor that sets _hand to 0.
+
+Example:
+Automaticly called
+
+Pre-conditions: none
+Post-conditions: hand is set to 0
+*/
+Dealer::Dealer()
+	:_hand (0) {}
+
 /*
 Function prototype:
 Dealer::~Dealer()
@@ -13,7 +30,8 @@ Pre-conditions: hand must exist
 Post-conditions: hand is deleted so you can play a new round.
 */
 Dealer::~Dealer() {
-    delete _hand;
+	if (_hand)
+		delete _hand;
 }
 
 
@@ -32,7 +50,8 @@ Pre-conditions: Must have a hand created. Calls in a hand and hands must exist t
 Post-conditions: Dealer has a hand. Player hand has 2 cards, dealer hand has 2 cards. 
 */
 void Dealer::deal(Hand *hand) {
-	delete _hand;
+	if (_hand)
+		delete _hand;
 	_hand = new Hand;
     // reshuffle cards if there aren't many left
     if (_decks.numCards() < 50) {
